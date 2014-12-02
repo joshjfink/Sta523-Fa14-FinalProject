@@ -6,28 +6,24 @@ shinyUI(fluidPage(
   
   sidebarLayout(
     sidebarPanel(
-      helpText("Select parameters for prior and likelihood to see posterior probability density."),
-      
-      selectInput("var", 
-                  label = "Choose a prior density distribution",
-                  choices = c("Normal", "Percent Black",
-                              "Percent Hispanic", "Percent Asian"),
-                  selected = "Percent White"),
-      
-      sliderInput("range", 
-                  label = "Range of interest:",
-                  min = -100, 
-                  max = 100, 
-                  value = c(-100, 100)),
-      conditionalPanel(condition = "input.variable == 'Normal'",
-                       sliderInput("integer", "Integer:", 
-                                   min=0, max=1, value=0)),
-      sliderInput("range", 
-                  label = "Range of interest:",
-                  min = 0, 
-                  max = 100, 
-                  value = c(0, 100))
+      fileInput('file1', 
+                'Choose CSV File',
+                accept = c('text/csv', 'text/comma-separated-values,text/plain', '.csv')),
+      helpText("Select prior parameters."),
+      selectInput("type", "Distribution Type", 
+                  list("Discrete" = "disc", 
+                        "Continuous" = "cont")),
+      conditionalPanel(
+        condition = "input.type == 'disc'",
+        selectInput("disc", "Discrete:",
+                    list("Bernoulli", "Binomial", "Poisson", "Geometric"))
       ),
+      conditionalPanel(
+        condition = "input.type == 'cont'",
+        selectInput("cont", "Continuous:",
+                    list("Normal", "Uniform", "Pareto", "Exponential", "Inverse-Gamma"))
+      )
+    ),
     mainPanel(
       textOutput("text1")
     )
