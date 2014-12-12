@@ -1,0 +1,37 @@
+---
+title: "README"
+author: "Andrew Wong"
+date: "December 11, 2014"
+output: html_document
+---
+******
+### Codebook:
+******
+* `type` <- Prior Distribution Type
+    + `disc` <- Discrete
+    + `cont` <- Continuous
+
+
+* Condition: `type` == `disc`:
+    + Condition: `discType` <- Discrete distribution type
+        + Bernoulli
+            + `bern.prop`
+        + Binomial
+            + `binom.trials`
+            + `binom.successes`
+        + Poisson
+            + `pois.lambda`
+
+* Condition: `type` == `cont`:
+    + Condition: `contType` <- Continuous distribution type
+        + Normal
+            + `norm.mean`
+            + `norm.var`
+        + Uniform
+            + `a`
+            + `b`
+        + Exponential
+            + `expo.rate`
+        + Inverse-Gamma
+            + `invgam.shape`
+            + `invgam.scale`
