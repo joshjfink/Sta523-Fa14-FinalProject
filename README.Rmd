@@ -5,13 +5,11 @@ date: "December 11, 2014"
 output: html_document
 bibliography: bibliography.bib
 ---
-```{r}
+```{r echo=FALSE}
 library(devtools) # Give source_url().
 suppressMessages( # Load check_packages().
   source_url("https://raw.githubusercontent.com/aw236/r.functions/master/functions.R")) 
-suppressWarnings(suppressMessages(check_packages(c("RefManageR"))))
-bib <- ReadBib(system.file("Bib", "bibliography.bib", 
-                           package = "RefManageR"), check = FALSE)
+# suppressWarnings(suppressMessages(check_packages(c(""))))
 ```
 ******
 ### Codebook:
@@ -48,15 +46,34 @@ bib <- ReadBib(system.file("Bib", "bibliography.bib",
             + `invgam.shape`
             + `invgam.scale`
 
-http://www.nytimes.com/2014/01/05/magazine/a-speck-in-the-sea.html?_r=0
 
-![](http://www-users.york.ac.uk/~pml1/bayes/images/wordcloud.jpg)
+
+![bayesian statistics wordcloud](http://www-users.york.ac.uk/~pml1/bayes/images/wordcloud.jpg)
+
+# 1. Introduction
+Bayesian statistics has experienced a reawakening with the advent of increased computational abilities from advances in computer technology. Such rejuvenation has led to new approaches to old problems once thought impossible. According to a September 29, 2014 article in the New York Times with the appropriately Bayesian title, "The Odds, Continually Updated," even helped saved a lost fisherman's life by narrowing down the possible areas to search for him to the most promising ones. With such a resurgence in the field and increasing interest in big data/data analytics/machine learning (i.e. statistics), more students are bound to seek statistical knowledge to apply to modern-day problems. As a group of new Bayesian statistics students, we decided to construct an application that we would have appreciated when we first started our Bayesian courses at Duke. Our app helps students interact with visualized posterior distributions given a normal likelihood function/sampling model and various priors with different parameters. We assume an audience that has some exposure to Bayesian statistics: exposure to prior distributions and likelihood functions, and Baye's Theorem.
+
+# 2. Main Objectives
+* Create a clean user interface (UI) with intuitive options. 
+* Achieve interactivity through web application framework, Shiny, while utilizing Just Another Gibbs Sampler (JAGS).
+
+# 3. Requirements
+In order to attempt a project of manageable scope and depth, some constraints are placed on the user. Firstly, we assume the relationship between the predicted and its predictors is linear. Therefore, the likelihood is limited to 4 possibilities: normal, probit, logistic and Poisson. Each of these likelihoods only have a few priors that make sense, but we allow the user to select the one they are interested in.
+
+* Likelihood
+    + Normal
+        + Mean priors - normal, t, double-exponential(La Place) distribution
+        + Variance priors - gamma
+    + Bernoulli probability - probit
+        + Mean priors - normal, t, double-exponential(La Place) distribution
+    + bernoulli probability - logistic
+        + Mean priors - normal, t, double-exponential(La Place) distribution
+    + Poisson (count data)
+        + Mean priors - normal, t, double-exponential(La Place) distribution
+          
+# 4. 
 
 
 References:
-
 ---
-nocite:
-```{r results = "asis", echo = FALSE}
-PrintBibliography(bib, .opts = list(check.entries = FALSE, sorting = "ynt"))
-```
+nocite: @odds
