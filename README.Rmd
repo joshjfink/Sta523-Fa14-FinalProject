@@ -3,7 +3,16 @@ title: "README"
 author: "Andrew Wong"
 date: "December 11, 2014"
 output: html_document
+bibliography: bibliography.bib
 ---
+```{r}
+library(devtools) # Give source_url().
+suppressMessages( # Load check_packages().
+  source_url("https://raw.githubusercontent.com/aw236/r.functions/master/functions.R")) 
+suppressWarnings(suppressMessages(check_packages(c("RefManageR"))))
+bib <- ReadBib(system.file("Bib", "bibliography.bib", 
+                           package = "RefManageR"), check = FALSE)
+```
 ******
 ### Codebook:
 ******
@@ -11,6 +20,7 @@ output: html_document
     + `disc` <- Discrete
     + `cont` <- Continuous
 
+------
 
 * Condition: `type` == `disc`:
     + Condition: `discType` <- Discrete distribution type
@@ -21,6 +31,8 @@ output: html_document
             + `binom.successes`
         + Poisson
             + `pois.lambda`
+            
+------
 
 * Condition: `type` == `cont`:
     + Condition: `contType` <- Continuous distribution type
@@ -35,3 +47,16 @@ output: html_document
         + Inverse-Gamma
             + `invgam.shape`
             + `invgam.scale`
+
+http://www.nytimes.com/2014/01/05/magazine/a-speck-in-the-sea.html?_r=0
+
+![](http://www-users.york.ac.uk/~pml1/bayes/images/wordcloud.jpg)
+
+
+References:
+
+---
+nocite:
+```{r results = "asis", echo = FALSE}
+PrintBibliography(bib, .opts = list(check.entries = FALSE, sorting = "ynt"))
+```
