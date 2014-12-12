@@ -25,7 +25,7 @@ shinyUI(fluidPage(
       ## Decision node 0
       selectInput("type", "Prior Distribution Type", 
                   list("Discrete" = "disc", 
-                        "Continuous" = "cont")),
+                       "Continuous" = "cont")),
       ## Decision node 1 | Decision node 0
       ## Choose a distribution for type selected at node 0.
       conditionalPanel(
@@ -74,14 +74,14 @@ shinyUI(fluidPage(
         conditionalPanel(
           condition = "input.contType == 'Uniform'",
           sliderInput(inputId = "norm.a", 
-                      label = "Starting point, a", 
-                      min = -100, 
-                      max = 0, 
-                      value = -100),
+                      label = "a", 
+                      min = 0, 
+                      max = 300, 
+                      value = 0),
           sliderInput(inputId = "norm.b", 
-                      label = "Interval Length", 
-                      min = 0.01, 
-                      max = 100, 
+                      label = "b", 
+                      min = 0, 
+                      max = 300, 
                       value = 100)
         ),
         conditionalPanel(
@@ -89,37 +89,24 @@ shinyUI(fluidPage(
           sliderInput(inputId = "expo.rate", 
                       label = "Rate, lambda",
                       min = 0, 
-                      max = 500,
+                      max = 500, 
                       value = 1)
-        ),
-        conditionalPanel(
-          condition = "input.contType == 'Gamma'",
-          sliderInput(inputId = "gam.shape", 
-                      label = "Shape, k", 
-                      min = 0.01, 
-                      max = 100.00, 
-                      value = 50.00),
-          sliderInput(inputId = "gam.scale", 
-                      label = "Scale, theta", 
-                      min = 0.01, 
-                      max = 100.00, 
-                      value = 50.00)
         ),
         conditionalPanel(
           condition = "input.contType == 'Inverse-Gamma'",
           sliderInput(inputId = "invgam.shape", 
                       label = "Shape, alpha", 
-                      min = 0.01, 
-                      max = 100.00, 
-                      value = 50.00),
+                      min = 0, 
+                      max = 500, 
+                      value = 1),
           sliderInput(inputId = "invgam.scale", 
-                      label = "Scale, beta", 
-                      min = 0.01, 
-                      max = 100.00, 
-                      value = 50.00),
-          submitButton("Submit") # output cond on submit
+                      label = "Scale, real", 
+                      min = 0, 
+                      max = 500, 
+                      value = 1)
         )
-      )
+      ),
+      submitButton("Submit") # output cond on submit
     ),
     mainPanel(
       textOutput("text1"),
@@ -127,6 +114,3 @@ shinyUI(fluidPage(
     )
   )
 ))
-
-## References:
-## Nested conditionalPanel statements: http://shiny.rstudio.com/reference/shiny/latest/conditionalPanel.html
