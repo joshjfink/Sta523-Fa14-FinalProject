@@ -116,7 +116,8 @@ shinyUI(fluidPage(
                       label = "Scale, beta", 
                       min = 0.01, 
                       max = 100.00, 
-                      value = 50.00)
+                      value = 50.00),
+          submitButton("Submit") # output cond on submit
         )
       )
     ),
