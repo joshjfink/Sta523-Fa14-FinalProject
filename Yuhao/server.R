@@ -11,50 +11,31 @@ shinyServer(function(input, output) {
     data=read.csv(inFile$datapath, header=input$header, sep=input$sep, 
                   quote=input$quote)
     
-    shinjags = function(data,input_a){
-      college=data
-      #Deal with the first column
-      rownames(college)=college[,1]
-      college=college[,-1]
+    shinjags = function(data,input_a,input_b){
       
-      college$Private=as.character(college$Private)
       
-      college[college=="Yes"]=1
-      college[college=="No"]=0
       
-      college$Private=as.numeric(college$Private)
-      
-      #Random selection of training set and test set
-      n = nrow(college)
-      set.seed(42)
-      n.train=round(.8*n)
-      n.test = n - n.train
-      X = as.matrix(college[-2]) # remove Apps = Y
-      
-      train = sample(1:n, n.train)
-      
-      X.train = X[train,]
-      X.test= X[-train,]
-      Y.train = college$Apps[train]
-      Y.test = college$Apps[-train]
+      n = nrow(data)
+      X = as.matrix(data[,-1]) # remove Y
       
       ### R interface to JAGS:
       library(R2jags)
       library(R2WinBUGS)
       # Create a data list with inputs for WinBugs
       scaled.X = scale(X)
-      data = list(Y = college$Apps, X=scaled.X, p=ncol(X))
+      data = list(Y = data[,1], X=scaled.X, p=ncol(X))
       data$n = length(data$Y)
       data$scales = attr(scaled.X, "scaled:scale")
       data$Xbar = attr(scaled.X, "scaled:center")
       data$a = input_a
+      data$b = input_b
       
       # write the model
       
       rr.model = function() {
         df1 <- a
         shape1 <- df1/2
-        df2 <- 7
+        df2 <- b
         shape2 <- df2/2
         
         for (i in 1:n) {
@@ -87,7 +68,7 @@ shinyServer(function(input, output) {
         beta = coefs[-1]
         phi = (1/summary(bf.lm)$sigma)^2
         lambda = rep(1, data$n)
-        lambda.beta = rep(1, 17)
+        lambda.beta = rep(1, data$p)
         return(list(alpha=alpha, phi=phi, lambda=lambda,
                     lambda.beta=lambda.beta))
       }
@@ -103,7 +84,7 @@ shinyServer(function(input, output) {
       bf.bugs = as.mcmc(bf.sim$BUGSoutput$sims.matrix)  # create an MCMC object 
       return(bf.bugs)
     }
-      plot(shinjags(data,input$input_a)[,"beta.orig[1]"])
+      plot(shinjags(data,input$invgam.shape,input$invgam.scale)[,"beta.orig[1]"])
     
     
   })
