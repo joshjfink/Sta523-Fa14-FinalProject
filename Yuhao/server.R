@@ -11,7 +11,7 @@ shinyServer(function(input, output) {
     data=read.csv(inFile$datapath, header=input$header, sep=input$sep, 
                   quote=input$quote)
     
-    
+    shinjags = function(data,input_a){
       college=data
       #Deal with the first column
       rownames(college)=college[,1]
@@ -47,12 +47,12 @@ shinyServer(function(input, output) {
       data$n = length(data$Y)
       data$scales = attr(scaled.X, "scaled:scale")
       data$Xbar = attr(scaled.X, "scaled:center")
-      #data$a = input_a
+      data$a = input_a
       
       # write the model
       
       rr.model = function() {
-        df1 <- 9
+        df1 <- a
         shape1 <- df1/2
         df2 <- 7
         shape2 <- df2/2
@@ -101,8 +101,9 @@ shinyServer(function(input, output) {
       bf.sim = jags(data, inits=rr.inits, parameters, model.file=rr.model.file,  n.iter=5000)
       
       bf.bugs = as.mcmc(bf.sim$BUGSoutput$sims.matrix)  # create an MCMC object 
-      
-      plot(bf.bugs[,"beta.orig[1]"])
+      return(bf.bugs)
+    }
+      plot(shinjags(data,input$input_a)[,"beta.orig[1]"])
     
     
   })
