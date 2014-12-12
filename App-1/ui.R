@@ -103,7 +103,9 @@ shinyUI(fluidPage(
                       label = "Scale, real", 
                       min = 0, 
                       max = 500, 
-                      value = 1)
+                      value = 1),
+          submitButton("Submit") # output cond on submit
+
         )
       )
     ),
